@@ -589,9 +589,16 @@ function displayResults(results) {
     // Update similarity score
     updateCircularProgress(results.similarityScore);
 
-    // Update statistics
-    document.getElementById('totalWords').textContent = results.totalWords.toLocaleString();
-    document.getElementById('matchedWords').textContent = results.matchedWords.toLocaleString();
+    // Get humanized data
+    const level = Humanize.similarityLevel(results.similarityScore);
+    const summary = Humanize.generateSummary(results);
+    const recommendations = Humanize.getRecommendations(results);
+    const readingTime = Humanize.readingTime(results.totalWords);
+    const confidence = Humanize.confidenceLevel(results.sources.length, results.similarityScore);
+
+    // Update statistics with humanized formatting
+    document.getElementById('totalWords').textContent = Humanize.formatNumber(results.totalWords);
+    document.getElementById('matchedWords').textContent = Humanize.formatNumber(results.matchedWords);
     document.getElementById('uniqueContent').textContent = results.uniqueContent + '%';
     document.getElementById('sourcesCount').textContent = results.sources.length;
 
@@ -601,14 +608,29 @@ function displayResults(results) {
     // Update sources list
     displaySources(results.sources);
 
-    // Update results content
+    // Update results content with humanized summary
     resultsContent.innerHTML = `
         <div class="result-summary">
             <div class="result-icon ${getSeverityClass(results.similarityScore)}">
                 <span class="material-symbols-rounded">${getSeverityIcon(results.similarityScore)}</span>
             </div>
-            <h3>${getSeverityTitle(results.similarityScore)}</h3>
-            <p>${getSeverityMessage(results.similarityScore)}</p>
+            <h3>${level.emoji} ${level.level} - ${level.description}</h3>
+            <p class="summary-text">${summary}</p>
+            <p class="advice-text"><strong>💡 Advice:</strong> ${level.advice}</p>
+            
+            <div class="meta-info">
+                <span class="meta-item">📖 Reading time: ${readingTime}</span>
+                <span class="meta-item">🎯 Confidence: ${confidence}</span>
+            </div>
+
+            ${recommendations.length > 0 ? `
+                <div class="recommendations">
+                    <h4>📋 Recommendations:</h4>
+                    <ul>
+                        ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : ''}
         </div>
     `;
 
@@ -711,21 +733,29 @@ function displaySources(sources) {
     const sourcesList = document.getElementById('sourcesList');
 
     if (sources.length === 0) {
-        sourcesList.innerHTML = '<p class="text-muted">No sources detected - Content appears original!</p>';
+        sourcesList.innerHTML = '<p class="text-muted">✨ No sources detected - Content appears original!</p>';
         return;
     }
 
-    sourcesList.innerHTML = sources.map(source => {
+    sourcesList.innerHTML = sources.map((source, index) => {
         const matchClass = source.matchPercentage > 60 ? 'high-match' :
             source.matchPercentage > 30 ? 'medium-match' : 'low-match';
 
+        const matchDesc = Humanize.matchDescription(source.matchPercentage);
+        const ordinalNum = Humanize.ordinal(index + 1);
+
         return `
             <div class="source-item ${matchClass}">
-                <div class="source-info">
-                    <div class="source-title">${source.title}</div>
-                    <a href="${source.url}" class="source-url" target="_blank">${source.url}</a>
+                <div class="source-header">
+                    <span class="source-rank">${ordinalNum} Source</span>
+                    <div class="source-match-badge">${matchDesc}</div>
                 </div>
-                <div class="source-match">${source.matchPercentage}%</div>
+                <div class="source-info">
+                    <div class="source-title">📄 ${source.title}</div>
+                    <a href="${source.url}" class="source-url" target="_blank" rel="noopener noreferrer">
+                        🔗 ${Humanize.truncate(source.url, 60)}
+                    </a>
+                </div>
             </div>
         `;
     }).join('');
