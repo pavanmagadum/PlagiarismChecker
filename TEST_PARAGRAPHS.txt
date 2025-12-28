@@ -1,0 +1,51 @@
+=== PLAGIARISM CHECKER TEST PARAGRAPHS ===
+
+Copy and paste these paragraphs into the plagiarism checker to test accuracy.
+
+---
+
+TEST 1: HIGH PLAGIARISM (Expected: 75-90%)
+This text directly matches the Climate Change database entry.
+
+Climate change refers to long-term shifts in temperatures and weather patterns. These shifts may be natural, but since the 1800s, human activities have been the main driver of climate change, primarily due to the burning of fossil fuels like coal, oil, and gas. The evidence for rapid climate change is compelling. Global temperature is rising, ocean warming is occurring, ice sheets are shrinking, glaciers are retreating, snow cover is decreasing, sea level is rising, Arctic sea ice is declining, and extreme weather events are increasing in frequency.
+
+---
+
+TEST 2: MODERATE PLAGIARISM (Expected: 50-70%)
+This is a paraphrased version of the AI database entry.
+
+Artificial intelligence represents the simulation of human cognitive processes by computer systems. These processes encompass learning, reasoning, and self-correction capabilities. AI applications include expert systems, natural language processing, speech recognition and machine vision. Machine learning is a subset of AI that provides systems the ability to automatically learn and improve from experience.
+
+---
+
+TEST 3: LOW/NO PLAGIARISM (Expected: 0-15%)
+This is original content about Quantum Computing (not in database).
+
+Quantum computing represents a revolutionary approach to information processing, utilizing quantum mechanical phenomena such as superposition and entanglement. Unlike classical computers that use bits representing either 0 or 1, quantum computers use qubits that can exist in multiple states simultaneously. This allows quantum computers to solve certain complex problems exponentially faster than traditional computers, particularly in areas like cryptography, drug discovery, and optimization problems.
+
+---
+
+TEST 4: HIGH PLAGIARISM (Expected: 70-85%)
+This matches the Web Development database entry.
+
+Web development is the work involved in developing a website for the Internet or an intranet. Web development can range from developing a simple single static page of plain text to complex web applications, electronic businesses, and social network services. HTML, CSS, and JavaScript are the fundamental technologies for building web pages and web applications.
+
+---
+
+TEST 5: PARTIAL OVERLAP (Expected: 30-50%)
+This has some overlap with climate change but is mostly different.
+
+Climate change is a serious global issue that affects everyone. Rising temperatures and extreme weather patterns are becoming more common. Scientists worldwide are studying the environmental impact and proposing solutions. Renewable energy sources and sustainable practices are essential for our future.
+
+---
+
+INSTRUCTIONS:
+1. Open index.html in your browser
+2. Copy one test paragraph at a time
+3. Paste into the text area
+4. Click "Check Plagiarism"
+5. Verify the similarity percentage matches the expected range
+6. Check that no negative values appear
+7. Confirm unique content = 100 - similarity percentage
+
+All percentages should be in the 0-100% range with no errors!

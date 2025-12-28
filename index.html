@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Professional plagiarism checker - Detect copied content with advanced similarity analysis">
+    <title>Plagiarism Checker - Advanced Content Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet">
+
+    <!-- PDF.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- Mammoth.js for DOCX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+</head>
+
+<body>
+    <div class="background-gradient"></div>
+
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <span class="material-symbols-rounded">shield_with_heart</span>
+                <h1>Plagiarism<span class="highlight">Checker</span></h1>
+            </div>
+            <nav class="nav">
+                <a href="#checker" class="nav-link active">Checker</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#help" class="nav-link">Help</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="hero">
+                <h2 class="hero-title">Advanced Plagiarism Detection</h2>
+                <p class="hero-subtitle">Detect copied content instantly with our powerful similarity analysis engine
+                </p>
+            </section>
+
+            <div class="checker-layout">
+                <!-- Input Section -->
+                <section class="input-section glass-card">
+                    <div class="section-header">
+                        <h3>
+                            <span class="material-symbols-rounded">edit_document</span>
+                            Enter Your Text
+                        </h3>
+                        <div class="char-counter">
+                            <span id="charCount">0</span> characters
+                        </div>
+                    </div>
+
+                    <div class="input-area">
+                        <textarea id="textInput" class="text-input"
+                            placeholder="Paste or type your text here to check for plagiarism...&#10;&#10;You can also upload a file (PDF, DOCX, DOC, TXT, RTF, ODT) using the button below."
+                            rows="12"></textarea>
+                    </div>
+
+                    <div class="input-actions">
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="fileInput" accept=".txt,.pdf,.doc,.docx,.rtf,.odt" hidden>
+                            <button class="btn btn-secondary" id="uploadBtn">
+                                <span class="material-symbols-rounded">upload_file</span>
+                                Upload File
+                            </button>
+                            <span class="file-name" id="fileName"></span>
+                        </div>
+
+                        <button class="btn btn-primary" id="checkBtn">
+                            <span class="material-symbols-rounded">search</span>
+                            Check Plagiarism
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Results Section -->
+                <section class="results-section glass-card" id="resultsSection">
+                    <div class="section-header">
+                        <h3>
+                            <span class="material-symbols-rounded">analytics</span>
+                            Analysis Results
+                        </h3>
+                        <button class="btn btn-icon" id="clearBtn" title="Clear Results">
+                            <span class="material-symbols-rounded">close</span>
+                        </button>
+                    </div>
+
+                    <div class="results-content" id="resultsContent">
+                        <div class="empty-state">
+                            <span class="material-symbols-rounded">pending_actions</span>
+                            <p>Enter text and click "Check Plagiarism" to see results</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Detailed Analysis Section (Hidden by default) -->
+            <section class="analysis-section" id="analysisSection" style="display: none;">
+                <div class="analysis-grid">
+                    <!-- Similarity Score Card -->
+                    <div class="analysis-card glass-card">
+                        <h4>
+                            <span class="material-symbols-rounded">percent</span>
+                            Similarity Score
+                        </h4>
+                        <div class="score-display">
+                            <div class="circular-progress" id="circularProgress">
+                                <svg class="progress-ring" width="160" height="160">
+                                    <circle class="progress-ring-bg" cx="80" cy="80" r="70"></circle>
+                                    <circle class="progress-ring-fill" cx="80" cy="80" r="70" id="progressCircle">
+                                    </circle>
+                                </svg>
+                                <div class="progress-text">
+                                    <span class="progress-value" id="scoreValue">0</span>
+                                    <span class="progress-label">%</span>
+                                </div>
+                            </div>
+                            <div class="score-label" id="scoreLabel">Analyzing...</div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Card -->
+                    <div class="analysis-card glass-card">
+                        <h4>
+                            <span class="material-symbols-rounded">bar_chart</span>
+                            Statistics
+                        </h4>
+                        <div class="stats-list">
+                            <div class="stat-item">
+                                <span class="stat-label">Total Words</span>
+                                <span class="stat-value" id="totalWords">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Matched Words</span>
+                                <span class="stat-value" id="matchedWords">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Unique Content</span>
+                                <span class="stat-value" id="uniqueContent">100%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Sources Found</span>
+                                <span class="stat-value" id="sourcesCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Matched Text Card -->
+                    <div class="analysis-card glass-card full-width">
+                        <h4>
+                            <span class="material-symbols-rounded">highlight</span>
+                            Highlighted Text
+                        </h4>
+                        <div class="highlighted-text" id="highlightedText">
+                            <p class="text-muted">No matches found</p>
+                        </div>
+                    </div>
+
+                    <!-- Sources Card -->
+                    <div class="analysis-card glass-card full-width">
+                        <h4>
+                            <span class="material-symbols-rounded">source</span>
+                            Potential Sources
+                        </h4>
+                        <div class="sources-list" id="sourcesList">
+                            <p class="text-muted">No sources detected</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Plagiarism Checker. Advanced content analysis powered by AI algorithms.</p>
+        </div>
+    </footer>
+
+    <script src="script-dynamic.js"></script>
+</body>
+
+</html>
